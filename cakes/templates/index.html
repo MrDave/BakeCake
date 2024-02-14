@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-	<link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<!-- Для разработки: -->
 	<script src="https://unpkg.com/vue@3"></script>
 	<!-- Для продакшина: -->
@@ -20,7 +21,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<a class="navbar-brand" href="#">
-			<img src="img/Logo.svg" alt="CakeBake">
+			<img src="{% static 'img/Logo.svg' %}" alt="CakeBake">
 		</a>
 		<div class="collapse navbar-collapse justify-content-end" id="navbar">
 			<ul class="navbar-nav">
@@ -86,13 +87,13 @@
 								<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
 								<path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
 							</svg>
-							{{Step === 'Number' ? 'Введите номер' : 'Введите код'}}</error-message></small>
+							Step === 'Number' ? 'Введите номер' : 'Введите код'</error-message></small>
 						<error-message name="phone_format" class="fs_12 cake_pink text-center position-absolute bottom-0"></error-message>
 						<error-message name="code_format" class="fs_12 cake_pink text-center position-absolute bottom-0"></error-message>
 					</v-form>
 
 					<div class="modal-footer d-flex flex-column justify-content-between align-items-center text-center border-0 mx-5">
-						<p class="fs_12 cake_grey">{{Step === `Number` ? `Нажимая на кнопку, вы соглашаетесь на обработку персональных данных в соответствии с политикой конфиденциальности` : Step === 'Code' ? `Осталось времени: 05:00` : ``}}</p>
+						<p class="fs_12 cake_grey">ажимая на кнопку, вы соглашаетесь на обработку персональных данных в соответствии с политикой конфиденциальности</p>
 						<a href="#" v-if="Step === `Code`" @click.prevent="ToRegStep1" class="text-decoration-none cake_pink fs_12">изменить данные</a>
 					</div>
 				</div>
@@ -346,15 +347,15 @@
 							<div class="col-12 col-lg-4 d-flex justify-content-center justify-content-lg-end">
 								<div class="cake__card p-4 position-relative cake_grey">
 									<span class="cake__badge rounded-pill">?</span>
-									<span>Количество уровней: {{ DATA.Levels[Levels] }}</span>
-									<span>Форма уровней: {{ DATA.Forms[Form] }}</span>
-									<p>Топинг: {{ DATA.Toppings[Topping] }}</p>
+									<span>Количество уровней: </span>
+									<span>Форма уровней: </span>
+									<p>Топинг: </p>
 									<span>Дополнительно:</span>
 									<ul>
-										<li>Ягоды: {{ DATA.Berries[Berries] }}</li>
-										<li>Декор: {{ DATA.Decors[Decor] }}</li>
+										<li>Ягоды: </li>
+										<li>Декор: </li>
 									</ul>
-									<span>{{ Words === '' ? 'Без надписи' : Words }}</span>
+									<span>Без надписи:</span>
 								</div>
 							</div>
 						</div>
@@ -386,7 +387,7 @@
 							</div>
 							<div class="col-12 col-md-6 d-flex flex-column align-items-center align-items-md-end mt-3 mt-md-0">
 								<div class="d-flex">
-									<span class="cake_pink fs_40 fw-bold me-2">Итого: {{ Cost }}₽</span>
+									<span class="cake_pink fs_40 fw-bold me-2">Итого: ₽</span>
 								</div>
 								<button type="submit" class="btn btn_hover text-white rounded-pill mt-3 px-5 shadow-none cake__button cake__bg_pink">К оплате</button>
 							</div>
