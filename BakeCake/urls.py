@@ -20,8 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', admin.site.urls), #тут нужна стартовая страница, куда переходить
-]
-
-urlpatterns += [
     path('accounts/', include('phone_auth.urls')),
 ]
