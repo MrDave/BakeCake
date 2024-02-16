@@ -30,10 +30,28 @@ SECRET_KEY = env.str("SECRET_KEY")
 DEBUG = env.bool("DEBUG", False)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", [])
-CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", [])
 
+if DEBUG:
+    CSRF_TRUSTED_ORIGINS = ["http://*", "https://*"]
+else:
+    CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", [])
 
 # Application definition
+REGISTER_USERNAME_REQUIRED = False
+REGISTER_EMAIL_REQUIRED = False
+REGISTER_FNAME_REQUIRED = False
+REGISTER_LNAME_REQUIRED = False
+REGISTER_CONFIRM_PASSWORD_REQUIRED = True
+# LOGIN_REDIRECT_URL = '/accounts/profile/'
+LOGIN_REDIRECT_URL = "/"
+
+LOGOUT_REDIRECT_URL = "/"
+AUTHENTICATION_METHODS = {"phone"}
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "phone_auth.backend.CustomAuthBackend",
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -42,10 +60,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "cakes.apps.CakesConfig",
     "phonenumber_field",
+    "phone_auth",
+    "corsheaders",
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -55,6 +75,14 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    "corsheaders.middleware.CorsMiddleware",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000"
 ]
 
 ROOT_URLCONF = "BakeCake.urls"
@@ -62,7 +90,7 @@ ROOT_URLCONF = "BakeCake.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -93,18 +121,18 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    # },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    # },
 ]
 
 

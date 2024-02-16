@@ -3,4 +3,5 @@ django-phonenumber-field[phonenumbers]~=7.3.0
 environs[django] ~= 10.3.0
 Pillow ~= 10.2.0
 djangorestframework == 3.14.*
-
+django-phone-auth ~= 0.3.1
+django-cors-headers ~= 4.3.1
