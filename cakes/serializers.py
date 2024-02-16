@@ -8,7 +8,7 @@ class CakeSerializer(serializers.ModelSerializer):
         fields = [
             # "id",
             "levels",
-            "shape",
+            "form",
             "topping",
             "berries",
             "decorations",
@@ -32,7 +32,7 @@ class OrderSerializer(serializers.ModelSerializer):
         ]
 
     # def create(self, validated_data):
-    #     cake_keys = ["levels", "shape", "topping", "berries", "decorations", "text", "cost"]
+    #     cake_keys = ["levels", "form", "topping", "berries", "decorations", "text", "cost"]
     #     cake_payload = {key: validated_data.pop(key) for key in cake_keys}
     #     cake = Cake(**cake_payload)
     #     return Order(cake=cake, **validated_data)

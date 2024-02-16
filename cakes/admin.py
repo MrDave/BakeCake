@@ -1,6 +1,6 @@
 from django.contrib import admin
 from cakes.models import Cake, Order
-from cakes.models import Level, Shape, Topping, Berry, Decoration
+from cakes.models import Level, Form, Topping, Berry, Decoration
 
 
 @admin.register(Cake)
@@ -8,7 +8,7 @@ class CakeAdmin(admin.ModelAdmin):
     list_display = [
         "id",
         "levels",
-        "shape",
+        "form",
         "topping",
         # "berries_list",
         # "decorations",
@@ -34,7 +34,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Level)
-admin.site.register(Shape)
+admin.site.register(Form)
 admin.site.register(Topping)
 admin.site.register(Berry)
 admin.site.register(Decoration)
