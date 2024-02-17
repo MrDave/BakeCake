@@ -87,10 +87,14 @@ CORS_ALLOWED_ORIGINS = [
 
 ROOT_URLCONF = "BakeCake.urls"
 
+
+TEMPLATE_DIR = Path(BASE_DIR, 'templates')
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates",
+                 "cakes/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -155,7 +159,12 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATIC_ROOT = Path(BASE_DIR).joinpath("collected_static")
+STATICFILES_DIRS = [
+    Path(BASE_DIR, 'static'),
+]
+
+STATIC_ROOT = Path(BASE_DIR, 'staticfiles')
+
 
 MEDIA_ROOT = Path(BASE_DIR).joinpath("media")
 
