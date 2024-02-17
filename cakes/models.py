@@ -15,7 +15,7 @@ class Level(models.Model):
         return str(self.amount)
 
 
-class Shape(models.Model):
+class Form(models.Model):
     name = models.CharField(verbose_name="название", max_length=20)
     price = models.IntegerField(verbose_name="стоимость", validators=[MinValueValidator(0)])
 
@@ -70,8 +70,8 @@ class Cake(models.Model):
         on_delete=models.PROTECT,
         related_name="cakes"
     )
-    shape = models.ForeignKey(
-        Shape,
+    form = models.ForeignKey(
+        Form,
         verbose_name="форма торта",
         on_delete=models.PROTECT,
         related_name="cakes"
@@ -109,7 +109,7 @@ class Cake(models.Model):
         verbose_name_plural = "торты"
 
     def __str__(self):
-        return f"{self.levels}-слойный {self.shape}, топпинг - {self.topping}"
+        return f"{self.levels}-слойный {self.form}, топпинг - {self.topping}"
 
 
 class Order(models.Model):
