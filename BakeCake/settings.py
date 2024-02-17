@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "phone_auth",
     "corsheaders",
+    "rest_framework",
 ]
 
 

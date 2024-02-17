@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from cakes import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', admin.site.urls), #тут нужна стартовая страница, куда переходить
     path('accounts/', include('phone_auth.urls')),
+    path('create-order/', views.create_order, name="create-order"),
 ]
