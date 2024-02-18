@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
-from cakes.views import show_main
+from cakes import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', show_main, name='main'),
+    path('', views.show_main, name='main'),
     path('accounts/', include('phone_auth.urls')),
 ]
