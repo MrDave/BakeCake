@@ -6,4 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.show_main, name='main'),
     path('accounts/', include('phone_auth.urls')),
+    path('create-order/', views.create_order, name="create-order"),
 ]
