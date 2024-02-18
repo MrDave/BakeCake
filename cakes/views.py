@@ -6,6 +6,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 
+def show_main(request):
+    return render(request, "index.html")
+
+
 @api_view(["POST"])
 @transaction.atomic()
 def create_order(request):
