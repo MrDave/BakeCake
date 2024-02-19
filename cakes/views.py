@@ -9,6 +9,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
 from django.db import models
+from django.shortcuts import redirect
 
 
 def show_main(request):
@@ -113,24 +114,4 @@ def create_order(request):
         **serializer.validated_data
     )
 
-    return Response(
-        {
-            "order_id": order.id,
-            "user_id": order.user.id,
-            "cake": {
-                "cake_id": cake.id,
-                "levels": cake.levels.amount,
-                "form": cake.form.name,
-                "topping": cake.topping.name,
-                "berries": cake.berries.name if cake.berries else "",
-                "decorations": cake.decorations.name if cake.decorations else "",
-                "text": cake.text,
-                # "cost": cake.cost,
-            },
-            "address": order.address,
-            "notes": order.notes,
-            "delivery_date": order.delivery_date,
-            "delivery_time": order.delivery_time,
-            "cost": order.cost,
-        }
-    )
+    return redirect("main")  # TODO: redirect to account view when it's ready
