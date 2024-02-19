@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from cakes.models import Cake, Order
+
 from cakes.models import Level, Form, Topping, Berry, Decoration
-from django.contrib.auth.models import User
 
 
 # class CakeSerializer(serializers.ModelSerializer):

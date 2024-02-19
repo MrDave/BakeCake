@@ -1,15 +1,14 @@
 import datetime
 
-from django.shortcuts import render
 from django.db import transaction
-from cakes.serializers import OrderSerializer
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.shortcuts import render
+from rest_framework.decorators import api_view
+
 from cakes.models import Cake, Order
 from cakes.models import Level, Form, Topping, Berry, Decoration
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from django.http import JsonResponse
-from django.db import models
-from django.shortcuts import redirect
+from cakes.serializers import OrderSerializer
 
 
 def show_main(request):
