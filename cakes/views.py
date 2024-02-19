@@ -85,9 +85,8 @@ def create_order(request):
         "decor",
         "words"
     ]
-    cake_payload = {key: serializer.validated_data.pop(key) for key in cake_keys}
+    cake_payload = {key: serializer.validated_data.pop(key, None) for key in cake_keys}
 
-    # TODO: установить ягоды и декор в торт
     cake_payload["decorations"] = cake_payload.pop("decor")
     text = cake_payload.pop("words")
 
@@ -100,6 +99,8 @@ def create_order(request):
 
     delivery_date = serializer.validated_data.pop("date")
     delivery_time = serializer.validated_data.pop("time")
+    order_notes = serializer.validated_data.pop("comments", "")
+    delivery_notes = serializer.validated_data.pop("delivcomments", "")
 
     quick_delivery_markup = 1.2 if (datetime.datetime.combine(delivery_date, delivery_time) -
                                     datetime.datetime.now() < datetime.timedelta(days=1)) else 1
@@ -111,6 +112,8 @@ def create_order(request):
         cost=order_cost,
         delivery_date=delivery_date,
         delivery_time=delivery_time,
+        order_notes=order_notes,
+        delivery_notes=delivery_notes,
         **serializer.validated_data
     )
 
