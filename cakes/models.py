@@ -141,6 +141,7 @@ class Order(models.Model):
         decimal_places=2,
         max_digits=7
     )
+    finished = models.BooleanField(verbose_name="заказ завершён", default=False)
 
     class Meta:
         verbose_name = "заказ"

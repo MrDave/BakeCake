@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import redirect
@@ -65,13 +66,26 @@ def form_costs(request):
     return JsonResponse(response, json_dumps_params={"ensure_ascii": False})
 
 
+@login_required
+def profile(request):
+    if request.user.is_authenticated:
+        user = request.user
+
+    orders = Order.objects.filter(user=user).order_by("-id")
+    context = {
+        "user": user,
+        "orders": orders
+    }
+
+    return render(request, "lk.html", context=context)
+
+
 @api_view(["POST"])
 @transaction.atomic()
 def create_order(request):
     lowercase_payload = {key.lower(): value for key, value in request.data.items()}
     serializer = OrderSerializer(data=lowercase_payload)
     serializer.is_valid(raise_exception=True)
-    print(serializer.validated_data)
 
     if request.user.is_authenticated:
         user = request.user
