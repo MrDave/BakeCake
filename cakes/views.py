@@ -67,15 +67,15 @@ def form_costs(request):
 
 
 def profile(request):
-    user = User.objects.all()
+    # user = User.objects.all()
 
     if request.user.is_authenticated:
         user = request.user
 
+    orders = Order.objects.filter(user=user).order_by("-id")
     context = {
-        "first_name": user.first_name,
-        "last_name": user.first_name,
-        "email": user.email,
+        "user": user,
+        "orders": orders
     }
 
     return render(request, "lk.html", context=context)
@@ -87,7 +87,6 @@ def create_order(request):
     lowercase_payload = {key.lower(): value for key, value in request.data.items()}
     serializer = OrderSerializer(data=lowercase_payload)
     serializer.is_valid(raise_exception=True)
-    print(serializer.validated_data)
 
     if request.user.is_authenticated:
         user = request.user
@@ -116,11 +115,6 @@ def create_order(request):
     delivery_time = serializer.validated_data.pop("time")
     order_notes = serializer.validated_data.pop("comments", "")
     delivery_notes = serializer.validated_data.pop("delivcomments", "")
-
-    # TODO: высчитать реальную стоимость
-    order = Order.objects.create(user=user, cake=cake, cost=9999, delivery_date=delivery_date,
-                                 delivery_time=delivery_time, **serializer.validated_data)
-
 
     quick_delivery_markup = 1.2 if (datetime.datetime.combine(delivery_date, delivery_time) -
                                     datetime.datetime.now() < datetime.timedelta(days=1)) else 1
