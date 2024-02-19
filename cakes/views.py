@@ -83,6 +83,8 @@ def create_order(request):
     cake_payload = {key: serializer.validated_data.pop(key) for key in cake_keys}
 
     # cake_payload = serializer.validated_data.pop("cake")
+
+    # TODO: установить ягоды и декор в торт
     # berries = cake_payload.pop("berries")
     # decorations = cake_payload.pop("decor")
     text = cake_payload.pop("words")
@@ -92,6 +94,7 @@ def create_order(request):
     # cake.decorations.set(decorations)
     delivery_date = serializer.validated_data.pop("date")
     delivery_time = serializer.validated_data.pop("time")
+    # TODO: высчитать реальную стоимость
     order = Order.objects.create(user=user, cake=cake, cost=9999, delivery_date=delivery_date, delivery_time=delivery_time, **serializer.validated_data)
     return Response(
         {
