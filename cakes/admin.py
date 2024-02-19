@@ -13,7 +13,6 @@ class CakeAdmin(admin.ModelAdmin):
         # "berries_list",
         # "decorations",
         "text",
-        "cost"
     ]
 
     # @admin.display()

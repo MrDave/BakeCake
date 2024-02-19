@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render
 from django.db import transaction
 from cakes.serializers import OrderSerializer
@@ -6,6 +8,7 @@ from cakes.models import Level, Form, Topping, Berry, Decoration
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
+from django.db import models
 
 
 def show_main(request):
@@ -82,20 +85,27 @@ def create_order(request):
     ]
     cake_payload = {key: serializer.validated_data.pop(key) for key in cake_keys}
 
-    # cake_payload = serializer.validated_data.pop("cake")
-
     # TODO: установить ягоды и декор в торт
     # berries = cake_payload.pop("berries")
     # decorations = cake_payload.pop("decor")
     text = cake_payload.pop("words")
 
-    cake = Cake.objects.create(text=text, cost=42200, **cake_payload)
+    cake = Cake.objects.create(text=text, **cake_payload)
+
+    base_cake_price = Cake.objects.filter(id=cake.id).fetch_with_base_price().first().total_price
+    words_price = 500 if cake.text else 0
+
     # cake.berries.set(berries)
     # cake.decorations.set(decorations)
+
     delivery_date = serializer.validated_data.pop("date")
     delivery_time = serializer.validated_data.pop("time")
-    # TODO: высчитать реальную стоимость
-    order = Order.objects.create(user=user, cake=cake, cost=9999, delivery_date=delivery_date, delivery_time=delivery_time, **serializer.validated_data)
+
+    quick_delivery_markup = 1.2 if (datetime.datetime.combine(delivery_date, delivery_time) -
+                                    datetime.datetime.now() < datetime.timedelta(days=1)) else 1
+
+    order_cost = (base_cake_price + words_price) * quick_delivery_markup
+    order = Order.objects.create(user=user, cake=cake, cost=order_cost, delivery_date=delivery_date, delivery_time=delivery_time, **serializer.validated_data)
     return Response(
         {
             "order_id": order.id,
@@ -108,7 +118,7 @@ def create_order(request):
                 "berries": cake.berries.name,
                 "decorations": cake.decorations.name,
                 "text": cake.text,
-                "cost": cake.cost,
+                # "cost": cake.cost,
             },
             "address": order.address,
             "notes": order.notes,
