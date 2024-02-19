@@ -63,6 +63,20 @@ class Decoration(models.Model):
         return self.name
 
 
+class CakeQuerySet(models.QuerySet):
+    def fetch_with_base_price(self):
+        return self.annotate(
+            total_price=models.Sum(
+                (
+                        models.F("levels__price") +
+                        models.F("form__price") +
+                        models.F("topping__price")
+                ),
+                output_field=models.IntegerField()
+            )
+        )
+
+
 class Cake(models.Model):
     levels = models.ForeignKey(
         Level,
@@ -82,27 +96,28 @@ class Cake(models.Model):
         on_delete=models.PROTECT,
         related_name="cakes"
     )
-    berries = models.ManyToManyField(
+    berries = models.ForeignKey(
         Berry,
         verbose_name="ягоды",
-        related_name="cakes"
+        related_name="cakes",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
     )
-    decorations = models.ManyToManyField(
+    decorations = models.ForeignKey(
         Decoration,
         verbose_name="украшения",
-        related_name="cakes"
+        related_name="cakes",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
     )
     text = models.CharField(
         verbose_name="надпись",
         max_length=75,
         blank=True
     )
-    cost = models.DecimalField(
-        verbose_name="стоимость",
-        validators=[MinValueValidator(0)],
-        decimal_places=2,
-        max_digits=7
-    )
+    objects = CakeQuerySet.as_manager()
 
     class Meta:
         verbose_name = "торт"

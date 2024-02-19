@@ -10,15 +10,10 @@ class CakeAdmin(admin.ModelAdmin):
         "levels",
         "form",
         "topping",
-        # "berries_list",
-        # "decorations",
+        "berries",
+        "decorations",
         "text",
-        "cost"
     ]
-
-    # @admin.display()
-    # def berries_list(self, obj):
-    #     return obj.berries.values_list("name", flat=True)
 
 
 @admin.register(Order)
