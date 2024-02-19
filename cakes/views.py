@@ -1,6 +1,6 @@
 import datetime
 
-from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import redirect
@@ -66,9 +66,8 @@ def form_costs(request):
     return JsonResponse(response, json_dumps_params={"ensure_ascii": False})
 
 
+@login_required
 def profile(request):
-    # user = User.objects.all()
-
     if request.user.is_authenticated:
         user = request.user
 
