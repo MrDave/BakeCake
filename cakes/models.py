@@ -131,7 +131,8 @@ class Order(models.Model):
     user = models.ForeignKey(User, verbose_name="пользователь", on_delete=models.CASCADE, related_name="orders")
     cake = models.ForeignKey(Cake, verbose_name="торт", on_delete=models.CASCADE, related_name="orders")
     address = models.TextField(verbose_name="адрес", editable=True)
-    notes = models.TextField(verbose_name="примечание", blank=True)
+    order_notes = models.TextField(verbose_name="примечание к заказу", blank=True)
+    delivery_notes = models.TextField(verbose_name="примечание для курьера", blank=True)
     delivery_date = models.DateField(verbose_name="дата доставки")
     delivery_time = models.TimeField(verbose_name="время доставки")
     cost = models.DecimalField(
