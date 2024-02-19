@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import redirect
@@ -65,6 +66,21 @@ def form_costs(request):
     return JsonResponse(response, json_dumps_params={"ensure_ascii": False})
 
 
+def profile(request):
+    user = User.objects.all()
+
+    if request.user.is_authenticated:
+        user = request.user
+
+    context = {
+        "first_name": user.first_name,
+        "last_name": user.first_name,
+        "email": user.email,
+    }
+
+    return render(request, "lk.html", context=context)
+
+
 @api_view(["POST"])
 @transaction.atomic()
 def create_order(request):
@@ -100,6 +116,11 @@ def create_order(request):
     delivery_time = serializer.validated_data.pop("time")
     order_notes = serializer.validated_data.pop("comments", "")
     delivery_notes = serializer.validated_data.pop("delivcomments", "")
+
+    # TODO: высчитать реальную стоимость
+    order = Order.objects.create(user=user, cake=cake, cost=9999, delivery_date=delivery_date,
+                                 delivery_time=delivery_time, **serializer.validated_data)
+
 
     quick_delivery_markup = 1.2 if (datetime.datetime.combine(delivery_date, delivery_time) -
                                     datetime.datetime.now() < datetime.timedelta(days=1)) else 1
