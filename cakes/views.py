@@ -3,6 +3,7 @@ from django.db import transaction
 from cakes.serializers import OrderSerializer
 from cakes.models import Cake, Order
 from cakes.models import Level, Form, Topping, Berry, Decoration
+from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
@@ -62,6 +63,21 @@ def form_costs(request):
     return JsonResponse(response, json_dumps_params={"ensure_ascii": False})
 
 
+def profile(request):
+    user = User.objects.all()
+
+    if request.user.is_authenticated:
+        user = request.user
+
+    context = {
+        "first_name": user.first_name,
+        "last_name": user.first_name,
+        "email": user.email,
+    }
+
+    return render(request, "lk.html", context=context)
+
+
 @api_view(["POST"])
 @transaction.atomic()
 def create_order(request):
@@ -95,7 +111,8 @@ def create_order(request):
     delivery_date = serializer.validated_data.pop("date")
     delivery_time = serializer.validated_data.pop("time")
     # TODO: высчитать реальную стоимость
-    order = Order.objects.create(user=user, cake=cake, cost=9999, delivery_date=delivery_date, delivery_time=delivery_time, **serializer.validated_data)
+    order = Order.objects.create(user=user, cake=cake, cost=9999, delivery_date=delivery_date,
+                                 delivery_time=delivery_time, **serializer.validated_data)
     return Response(
         {
             "order_id": order.id,
