@@ -1,15 +1,15 @@
 import datetime
 
-from django.shortcuts import render
+from django.contrib.auth.models import User
 from django.db import transaction
-from cakes.serializers import OrderSerializer
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.shortcuts import render
+from rest_framework.decorators import api_view
+
 from cakes.models import Cake, Order
 from cakes.models import Level, Form, Topping, Berry, Decoration
-from django.contrib.auth.models import User
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from django.http import JsonResponse
-from django.db import models
+from cakes.serializers import OrderSerializer
 
 
 def show_main(request):
@@ -100,9 +100,8 @@ def create_order(request):
         "decor",
         "words"
     ]
-    cake_payload = {key: serializer.validated_data.pop(key) for key in cake_keys}
+    cake_payload = {key: serializer.validated_data.pop(key, None) for key in cake_keys}
 
-    # TODO: установить ягоды и декор в торт
     cake_payload["decorations"] = cake_payload.pop("decor")
     text = cake_payload.pop("words")
 
@@ -115,6 +114,8 @@ def create_order(request):
 
     delivery_date = serializer.validated_data.pop("date")
     delivery_time = serializer.validated_data.pop("time")
+    order_notes = serializer.validated_data.pop("comments", "")
+    delivery_notes = serializer.validated_data.pop("delivcomments", "")
 
     # TODO: высчитать реальную стоимость
     order = Order.objects.create(user=user, cake=cake, cost=9999, delivery_date=delivery_date,
@@ -131,28 +132,9 @@ def create_order(request):
         cost=order_cost,
         delivery_date=delivery_date,
         delivery_time=delivery_time,
+        order_notes=order_notes,
+        delivery_notes=delivery_notes,
         **serializer.validated_data
     )
 
-
-    return Response(
-        {
-            "order_id": order.id,
-            "user_id": order.user.id,
-            "cake": {
-                "cake_id": cake.id,
-                "levels": cake.levels.amount,
-                "form": cake.form.name,
-                "topping": cake.topping.name,
-                "berries": cake.berries.name if cake.berries else "",
-                "decorations": cake.decorations.name if cake.decorations else "",
-                "text": cake.text,
-                # "cost": cake.cost,
-            },
-            "address": order.address,
-            "notes": order.notes,
-            "delivery_date": order.delivery_date,
-            "delivery_time": order.delivery_time,
-            "cost": order.cost,
-        }
-    )
+    return redirect("main")  # TODO: redirect to account view when it's ready
