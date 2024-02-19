@@ -130,4 +130,4 @@ def create_order(request):
         **serializer.validated_data
     )
 
-    return redirect("main")  # TODO: redirect to account view when it's ready
+    return redirect("profile")
