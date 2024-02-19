@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="{% static 'Style.css' %}">
 	<!-- Для разработки: -->
 	<script src="https://unpkg.com/vue@3"></script>
-	<!-- Для продакшина: -->
+	<!-- Для продакшена: -->
 	<!-- <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script> -->
 	<script src="https://unpkg.com/vee-validate"></script>
 	<title>Тортики</title>
@@ -20,7 +20,7 @@
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		<a class="navbar-brand" href="#">
+		<a class="navbar-brand" href="/">
 			<img src="{% static '/img/Logo.svg' %}" alt="CakeBake">
 		</a>
 		<div class="collapse navbar-collapse justify-content-end" id="navbar">
@@ -189,43 +189,54 @@
 					<error-message name="form" class="from__alert"></error-message>
 					<error-message name="topping" class="from__alert"></error-message>
 				</span>
-						<span class="z-index-1 fs_40 cake_pink text-end mt-5" id="cost">{{ Cost }}₽</span>
+						{% verbatim %}<span class="z-index-1 fs_40 cake_pink text-end mt-5" id="cost">{{ Cost }}₽</span>{% endverbatim %}
 					</div>
 					<div class="d-flex align-items-center flex-wrap mb-3">
 						<span class="me-3 fs_40 cake_blue">Количество уровней</span>
-						<v-field v-model="Levels" type="radio" name="lvls" id="num1" value="1" class="d-none cake__input"></v-field>
-						<label for="num1" class="mx-2 px-3 py-1 cake_grey cake__label">1</label>
-						<v-field v-model="Levels" type="radio" name="lvls" id="num2" value="2" class="d-none cake__input"></v-field>
-						<label for="num2" class="mx-2 px-3 py-1 cake_grey cake__label">2</label>
-						<v-field v-model="Levels" type="radio" name="lvls" id="num3" value="3" class="d-none cake__input"></v-field>
-						<label for="num3" class="mx-2 px-3 py-1 cake_grey cake__label">3</label>
+            {% for level in levels %}
+            	<v-field v-model="Levels" type="radio" name="lvls" id="num{{ level.id }}" value="{{ level.id }}" class="d-none cake__input"></v-field>
+							<label for="num{{ level.id }}" class="mx-2 px-3 py-1 cake_grey cake__label">{{ level.amount }}</label>
+            {% endfor %}
+<!--						<v-field v-model="Levels" type="radio" name="lvls" id="num1" value="1" class="d-none cake__input"></v-field>-->
+<!--						<label for="num1" class="mx-2 px-3 py-1 cake_grey cake__label">1</label>-->
+<!--						<v-field v-model="Levels" type="radio" name="lvls" id="num2" value="2" class="d-none cake__input"></v-field>-->
+<!--						<label for="num2" class="mx-2 px-3 py-1 cake_grey cake__label">2</label>-->
+<!--						<v-field v-model="Levels" type="radio" name="lvls" id="num3" value="3" class="d-none cake__input"></v-field>-->
+<!--						<label for="num3" class="mx-2 px-3 py-1 cake_grey cake__label">3</label>-->
 					</div>
-
 					<div class="d-flex align-items-center flex-wrap mb-3">
 						<span class="me-3 fs_40 cake_blue">Форма</span>
-						<v-field v-model="Form" type="radio" name="form" id="form1" value="1" class="d-none cake__input"></v-field>
-						<label for="form1" class="mx-2 px-3 py-1 cake_grey cake__label">Круг</label>
-						<v-field v-model="Form" type="radio" name="form" id="form2" value="2" class="d-none cake__input"></v-field>
-						<label for="form2" class="mx-2 px-3 py-1 cake_grey cake__label">Квадрат</label>
-						<v-field v-model="Form" type="radio" name="form" id="form3" value="3" class="d-none cake__input"></v-field>
-						<label for="form3" class="mx-2 px-3 py-1 cake_grey cake__label">Прямоугольник</label>
+						{% for form in forms %}
+							<v-field v-model="Form" type="radio" name="form" id="form{{ form.id }}" value="{{ form.id }}" class="d-none cake__input"></v-field>
+							<label for="form{{ form.id }}" class="mx-2 px-3 py-1 cake_grey cake__label">{{ form.name }}</label>
+						{% endfor %}
+<!--						<v-field v-model="Form" type="radio" name="form" id="form1" value="1" class="d-none cake__input"></v-field>-->
+<!--						<label for="form1" class="mx-2 px-3 py-1 cake_grey cake__label">Круг</label>-->
+<!--						<v-field v-model="Form" type="radio" name="form" id="form2" value="2" class="d-none cake__input"></v-field>-->
+<!--						<label for="form2" class="mx-2 px-3 py-1 cake_grey cake__label">Квадрат</label>-->
+<!--						<v-field v-model="Form" type="radio" name="form" id="form3" value="3" class="d-none cake__input"></v-field>-->
+<!--						<label for="form3" class="mx-2 px-3 py-1 cake_grey cake__label">Прямоугольник</label>-->
 					</div>
 					<div class="d-flex align-items-center flex-wrap mb-3">
 						<span class="me-3 fs_40 cake_blue">Топпинг</span>
-						<v-field v-model="Topping" type="radio" name="topping" id="topping1" value="1" class="d-none cake__input"></v-field>
-						<label for="topping1" class="mx-2 px-3 py-1 cake_grey cake__label">Без</label>
-						<v-field v-model="Topping" type="radio" name="topping" id="topping2" value="2" class="d-none cake__input"></v-field>
-						<label for="topping2" class="mx-2 px-3 py-1 cake_grey cake__label">Белый соус</label>
-						<v-field v-model="Topping" type="radio" name="topping" id="topping3" value="3" class="d-none cake__input"></v-field>
-						<label for="topping3" class="mx-2 px-3 py-1 cake_grey cake__label">Карамельный</label>
-						<v-field v-model="Topping" type="radio" name="topping" id="topping4" value="4" class="d-none cake__input"></v-field>
-						<label for="topping4" class="mx-2 px-3 py-1 cake_grey cake__label">Кленовый</label>
-						<v-field v-model="Topping" type="radio" name="topping" id="topping5" value="5" class="d-none cake__input"></v-field>
-						<label for="topping5" class="mx-2 px-3 py-1 cake_grey cake__label">Черничный</label>
-						<v-field v-model="Topping" type="radio" name="topping" id="topping6" value="6" class="d-none cake__input"></v-field>
-						<label for="topping6" class="mx-2 px-3 py-1 cake_grey cake__label">Молочный шоколад</label>
-						<v-field v-model="Topping" type="radio" name="topping" id="topping7" value="7" class="d-none cake__input"></v-field>
-						<label for="topping7" class="mx-2 px-3 py-1 cake_grey cake__label">Клубничный</label>
+						{% for topping in toppings %}
+							<v-field v-model="Topping" type="radio" name="topping" id="topping{{ topping.id }}" value="{{ topping.id }}" class="d-none cake__input"></v-field>
+							<label for="topping{{ topping.id }}" class="mx-2 px-3 py-1 cake_grey cake__label">{{ topping.name }}</label>
+						{% endfor %}
+<!--						<v-field v-model="Topping" type="radio" name="topping" id="topping1" value="1" class="d-none cake__input"></v-field>-->
+<!--						<label for="topping1" class="mx-2 px-3 py-1 cake_grey cake__label">Без</label>-->
+<!--						<v-field v-model="Topping" type="radio" name="topping" id="topping2" value="2" class="d-none cake__input"></v-field>-->
+<!--						<label for="topping2" class="mx-2 px-3 py-1 cake_grey cake__label">Белый соус</label>-->
+<!--						<v-field v-model="Topping" type="radio" name="topping" id="topping3" value="3" class="d-none cake__input"></v-field>-->
+<!--						<label for="topping3" class="mx-2 px-3 py-1 cake_grey cake__label">Карамельный</label>-->
+<!--						<v-field v-model="Topping" type="radio" name="topping" id="topping4" value="4" class="d-none cake__input"></v-field>-->
+<!--						<label for="topping4" class="mx-2 px-3 py-1 cake_grey cake__label">Кленовый</label>-->
+<!--						<v-field v-model="Topping" type="radio" name="topping" id="topping5" value="5" class="d-none cake__input"></v-field>-->
+<!--						<label for="topping5" class="mx-2 px-3 py-1 cake_grey cake__label">Черничный</label>-->
+<!--						<v-field v-model="Topping" type="radio" name="topping" id="topping6" value="6" class="d-none cake__input"></v-field>-->
+<!--						<label for="topping6" class="mx-2 px-3 py-1 cake_grey cake__label">Молочный шоколад</label>-->
+<!--						<v-field v-model="Topping" type="radio" name="topping" id="topping7" value="7" class="d-none cake__input"></v-field>-->
+<!--						<label for="topping7" class="mx-2 px-3 py-1 cake_grey cake__label">Клубничный</label>-->
 					</div>
 					<h1 class="me-3 fs_40 cake_pink mb-3 mt-5">Дополнительно</h1>
 					<div class="d-flex align-items-center flex-wrap mb-3">
@@ -274,34 +285,49 @@
 			</section>
 
 			<section class="row pt-header" id="step4" v-if="Designed">
-				<form class="d-none">
-					<input v-model="Levels" value="1" type="radio" name="LEVELS">
-					<input v-model="Levels" value="2" type="radio" name="LEVELS">
-					<input v-model="Levels" value="3" type="radio" name="LEVELS">
+				<form class="d-none" method="POST" action="api/create-order/">
+					{% csrf_token %}
+					{% for level in levels %}
+						<input v-model="Levels" value="{{ level.id }}" type="radio" name="LEVELS">
+					{% endfor %}
+<!--					<input v-model="Levels" value="1" type="radio" name="LEVELS">-->
+<!--					<input v-model="Levels" value="2" type="radio" name="LEVELS">-->
+<!--					<input v-model="Levels" value="3" type="radio" name="LEVELS">-->
 					<br>
-					<input v-model="Form" value="1" type="radio" name="FORM">
-					<input v-model="Form" value="2" type="radio" name="FORM">
-					<input v-model="Form" value="3" type="radio" name="FORM">
+					{% for form in forms %}
+						<input v-model="Form" value="{{ form.id }}" type="radio" name="FORM">
+					{% endfor %}
+<!--					<input v-model="Form" value="1" type="radio" name="FORM">-->
+<!--					<input v-model="Form" value="2" type="radio" name="FORM">-->
+<!--					<input v-model="Form" value="3" type="radio" name="FORM">-->
 					<br>
-					<input v-model="Topping" value="1" type="radio" name="TOPPING">
-					<input v-model="Topping" value="2" type="radio" name="TOPPING">
-					<input v-model="Topping" value="3" type="radio" name="TOPPING">
-					<input v-model="Topping" value="4" type="radio" name="TOPPING">
-					<input v-model="Topping" value="5" type="radio" name="TOPPING">
-					<input v-model="Topping" value="6" type="radio" name="TOPPING">
-					<input v-model="Topping" value="7" type="radio" name="TOPPING">
+					{% for topping in toppings %}
+						<input v-model="Topping" value="{{ topping.id }}" type="radio" name="TOPPING">
+					{% endfor %}
+<!--					<input v-model="Topping" value="1" type="radio" name="TOPPING">-->
+<!--					<input v-model="Topping" value="2" type="radio" name="TOPPING">-->
+<!--					<input v-model="Topping" value="3" type="radio" name="TOPPING">-->
+<!--					<input v-model="Topping" value="4" type="radio" name="TOPPING">-->
+<!--					<input v-model="Topping" value="5" type="radio" name="TOPPING">-->
+<!--					<input v-model="Topping" value="6" type="radio" name="TOPPING">-->
+<!--					<input v-model="Topping" value="7" type="radio" name="TOPPING">-->
+<!--					<input v-model="Topping" value="8" type="radio" name="TOPPING">-->
 					<br>
-					<input v-model="Berries" value="1" type="radio" name="BERRIES">
-					<input v-model="Berries" value="2" type="radio" name="BERRIES">
-					<input v-model="Berries" value="3" type="radio" name="BERRIES">
-					<input v-model="Berries" value="4" type="radio" name="BERRIES">
+					{% for berry in berries %}
+						<input v-model="Berries" value="{{ berry.id }}" type="radio" name="BERRIES">
+					{% endfor %}
+<!--					<input v-model="Berries" value="2" type="radio" name="BERRIES">-->
+<!--					<input v-model="Berries" value="3" type="radio" name="BERRIES">-->
+<!--					<input v-model="Berries" value="4" type="radio" name="BERRIES">-->
 					<br>
-					<input v-model="Decor" value="1" type="radio" name="DECOR">
-					<input v-model="Decor" value="2" type="radio" name="DECOR">
-					<input v-model="Decor" value="3" type="radio" name="DECOR">
-					<input v-model="Decor" value="4" type="radio" name="DECOR">
-					<input v-model="Decor" value="5" type="radio" name="DECOR">
-					<input v-model="Decor" value="6" type="radio" name="DECOR">
+					{% for decoration in decorations %}
+						<input v-model="Decor" value="{{ decoration.id }}" type="radio" name="DECOR">
+					{% endfor %}
+<!--					<input v-model="Decor" value="2" type="radio" name="DECOR">-->
+<!--					<input v-model="Decor" value="3" type="radio" name="DECOR">-->
+<!--					<input v-model="Decor" value="4" type="radio" name="DECOR">-->
+<!--					<input v-model="Decor" value="5" type="radio" name="DECOR">-->
+<!--					<input v-model="Decor" value="6" type="radio" name="DECOR">-->
 					<br>
 					<input v-model="Words" type="text" name="WORDS">
 					<input v-model="Comments" type="text" name="COMMENTS">
@@ -393,7 +419,7 @@
 							</div>
 							<div class="col-12 col-md-6 d-flex flex-column align-items-center align-items-md-end mt-3 mt-md-0">
 								<div class="d-flex">
-									<span class="cake_pink fs_40 fw-bold me-2">Итого: {{ Cost }}₽</span>
+									{% verbatim %}<span class="cake_pink fs_40 fw-bold me-2">Итого: {{ Cost }}₽</span>{% endverbatim %}
 								</div>
 								<p class="cake_grey">Оформляя заказ, вы соглашаетесь с <a href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf">условиями пользования</a> сервисом</p>
 								<button type="submit" class="btn btn_hover text-white rounded-pill mt-3 px-5 shadow-none cake__button cake__bg_pink">К оплате</button>

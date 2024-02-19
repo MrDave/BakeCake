@@ -106,8 +106,8 @@ Vue.createApp({
                 Decors: [ 'нет', 'Фисташки', 'Безе', 'Фундук', 'Пекан', 'Маршмеллоу', 'Марципан']
             },
             Costs: {
-                Levels: [0, 400, 750, 1100],
-                Forms: [0, 600, 400, 1000],
+                Levels: [0, 400, 750, 11000],
+                Forms: [0, 600, 40000, 1000],
                 Toppings: [0, 0, 200, 180, 200, 300, 350, 200],
                 Berries: [0, 400, 300, 450, 500],
                 Decors: [0, 300, 400, 350, 300, 200, 280],
@@ -131,7 +131,26 @@ Vue.createApp({
             DelivComments: ''
         }
     },
+    created() {
+        // Fetch data from Django backend API
+        this.fetchFormData();
+    },
     methods: {
+        async fetchFormData() {
+            try {
+                // Fetch form data from Django backend
+                const data_response = await fetch('/api/form-data');
+                const costs_response = await fetch('/api/form-costs')
+                const data = await data_response.json();
+                const costs = await costs_response.json();
+
+                // Update data properties with fetched data
+                this.DATA = data
+                this.Costs = costs;
+            } catch (error) {
+                console.error('Error fetching form data:', error);
+            }
+        },
         ToStep4() {
             this.Designed = true
             setTimeout(() => this.$refs.ToStep4.click(), 0);
