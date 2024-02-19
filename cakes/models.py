@@ -96,15 +96,21 @@ class Cake(models.Model):
         on_delete=models.PROTECT,
         related_name="cakes"
     )
-    berries = models.ManyToManyField(
+    berries = models.ForeignKey(
         Berry,
         verbose_name="ягоды",
-        related_name="cakes"
+        related_name="cakes",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
     )
-    decorations = models.ManyToManyField(
+    decorations = models.ForeignKey(
         Decoration,
         verbose_name="украшения",
-        related_name="cakes"
+        related_name="cakes",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
     )
     text = models.CharField(
         verbose_name="надпись",
