@@ -65,19 +65,52 @@ def form_costs(request):
 @api_view(["POST"])
 @transaction.atomic()
 def create_order(request):
-    serializer = OrderSerializer(data=request.data)
+    lowercase_payload = {key.lower(): value for key, value in request.data.items()}
+    serializer = OrderSerializer(data=lowercase_payload)
     serializer.is_valid(raise_exception=True)
 
-    # cake_keys = ["levels", "form", "topping", "berries", "decorations", "text", "cost"]
-    cake_payload = serializer.validated_data.pop("cake")
-    berries = cake_payload.pop("berries")
-    decorations = cake_payload.pop("decorations")
+    if request.user.is_authenticated:
+        user = request.user
 
-    cake = Cake.objects.create(**cake_payload)
-    cake.berries.set(berries)
-    cake.decorations.set(decorations)
+    cake_keys = [
+        "levels",
+        "form",
+        "topping",
+        # "berries",
+        # "decor",
+        "words"
+    ]
+    cake_payload = {key: serializer.validated_data.pop(key) for key in cake_keys}
 
-    order = Order.objects.create(cake=cake, **serializer.validated_data)
+    # cake_payload = serializer.validated_data.pop("cake")
+    # berries = cake_payload.pop("berries")
+    # decorations = cake_payload.pop("decor")
+    text = cake_payload.pop("words")
+
+    cake = Cake.objects.create(text=text, cost=42200, **cake_payload)
+    # cake.berries.set(berries)
+    # cake.decorations.set(decorations)
+    delivery_date = serializer.validated_data.pop("date")
+    delivery_time = serializer.validated_data.pop("time")
+    order = Order.objects.create(user=user, cake=cake, cost=9999, delivery_date=delivery_date, delivery_time=delivery_time, **serializer.validated_data)
     return Response(
-        OrderSerializer(order).data
+        {
+            "order_id": order.id,
+            "user_id": order.user.id,
+            "cake": {
+                "cake_id": cake.id,
+                "levels": cake.levels.amount,
+                "form": cake.form.name,
+                "topping": cake.topping.name,
+                "berries": cake.berries.name,
+                "decorations": cake.decorations.name,
+                "text": cake.text,
+                "cost": cake.cost,
+            },
+            "address": order.address,
+            "notes": order.notes,
+            "delivery_date": order.delivery_date,
+            "delivery_time": order.delivery_time,
+            "cost": order.cost,
+        }
     )
