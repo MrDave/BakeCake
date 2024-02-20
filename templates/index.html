@@ -49,8 +49,7 @@
 					</a>
 <!--					<a class="nav-link fw-lighter me-1 cake_blue position-relative" href="/accounts/login/" data-bs-toggle="modal">-->
 					<a class="nav-link fw-lighter me-1 cake_blue position-relative" data-bs-toggle="modal">
-						<a href="/accounts/login/" class="link-primary">Войти</a>
-						<img src=" {% static '/img/user.svg' %}" alt="">
+						<a href="{% url 'profile' %}" class="link-primary"><img src=" {% static '/img/user.svg' %}" alt=""></a>
 						<!--метка на иконке, убрать класс d-none чтоб появилась-->
 						<span class="position-absolute translate-middle badge rounded-pill cake__bg_pink fs_8 d-none">1</span>
 					</a>
