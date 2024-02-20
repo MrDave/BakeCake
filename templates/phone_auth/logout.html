@@ -1,15 +1,15 @@
 {% extends "phone_auth/base.html" %}
 
 {% block title_block %}
-    Logout
+    Выход из аккаунта
 {% endblock title_block %}
 
 {% block body_block %}
 <div class="phoneauthform">
-    <h3 class="phoneauthform-title">Are you sure you want to logout?</h3>
+    <h3 class="phoneauthform-title">Вы уверены, что хотите выйти?</h3>
     <form class="phoneauthform-content" method="POST">
         {% csrf_token %}
-        <button type="submit">Logout</button>
+        <button type="submit">Выйти</button>
     </form>
 </div>
 {% endblock body_block %}
