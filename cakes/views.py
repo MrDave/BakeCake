@@ -29,7 +29,7 @@ def show_main(request):
         "decorations": decorations,
         "user": user,
     }
-    return render(request, "index.html", context=context)
+    return render(request, "cakes/index.html", context=context)
 
 
 def form_data(request):
@@ -81,7 +81,7 @@ def profile(request):
         "orders": orders
     }
 
-    return render(request, "lk.html", context=context)
+    return render(request, "cakes/lk.html", context=context)
 
 
 @api_view(["POST"])
