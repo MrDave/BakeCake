@@ -19,14 +19,17 @@ def show_main(request):
     berries = Berry.objects.all()
     decorations = Decoration.objects.all()
 
+    user = request.user
+
     context = {
         "levels": levels,
         "forms": forms,
         "toppings": toppings,
         "berries": berries,
         "decorations": decorations,
+        "user": user,
     }
-    return render(request, "index.html", context=context)
+    return render(request, "cakes/index.html", context=context)
 
 
 def form_data(request):
@@ -74,10 +77,11 @@ def profile(request):
     orders = Order.objects.filter(user=user).order_by("-id")
     context = {
         "user": user,
+        "user_phone": user.phonenumber_set.first(),
         "orders": orders
     }
 
-    return render(request, "lk.html", context=context)
+    return render(request, "cakes/lk.html", context=context)
 
 
 @api_view(["POST"])
