@@ -1,9 +1,10 @@
 # BakeCake
-Custom cake shop
+Custom cake shop  
+[See the website in action](https://mrdave.pythonanywhere.com/)
 
 ## How to install
 
-Python should already be installed. This project is tested on Python <version(s)>. You may use other versions as you will, but YMMV.
+Python should already be installed. This project is tested on Python 3.10 and 3.11. You may use other versions as you will, but YMMV.
 
 Clone the repo / download code
 
@@ -27,8 +28,6 @@ python manage.py runserver
 ### env variables
 
 To configure those settings, create a `.env` file in the root folder of the project and put in there the following:
-
-#### Typical Django settings
 
 - `SECRET_KEY` - A secret key for a particular Django installation. This is used to provide cryptographic signing, and should be set to a unique, unpredictable value.
 - `DEBUG` - A boolean that turns on/off debug mode. If your app raises an exception when DEBUG is True, Django will display a detailed traceback, including a lot of metadata about your environment, such as all the currently defined Django settings (from settings.py).
